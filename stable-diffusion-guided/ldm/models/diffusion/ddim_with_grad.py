@@ -4,7 +4,8 @@ import torch
 import numpy as np
 from tqdm import tqdm
 from functools import partial
-import GPUtil
+import os, sys
+
 from torchvision import transforms, utils
 
 
@@ -441,7 +442,7 @@ class DDIMSamplerWithGrad(object):
 
             if operation.guidance_3:
 
-                print(GPUtil.showUtilization())
+
 
                 torch.set_grad_enabled(True)
                 img_in = img.detach().requires_grad_(True)
@@ -496,7 +497,7 @@ class DDIMSamplerWithGrad(object):
                 torch.set_grad_enabled(False)
                 print("Done ?")
 
-                print(GPUtil.showUtilization())
+
 
             else:
                 if operation.original_guidance:

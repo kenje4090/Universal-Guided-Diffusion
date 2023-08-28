@@ -5,7 +5,9 @@ https://github.com/openai/improved-diffusion/blob/e94489283bb876ac1477d5dd7709bb
 https://github.com/CompVis/taming-transformers
 -- merci
 """
-
+import os, sys
+base_dir = os.getcwd()
+sys.path.insert(0, base_dir)
 import torch
 import torch as th
 import torch.nn as nn
@@ -17,7 +19,7 @@ from contextlib import contextmanager
 from functools import partial
 from tqdm import tqdm
 from torchvision.utils import make_grid
-from pytorch_lightning.utilities.distributed import rank_zero_only
+from pytorch_lightning.utilities.rank_zero import rank_zero_only
 
 from ldm.util import log_txt_as_img, exists, default, ismap, isimage, mean_flat, count_params, instantiate_from_config
 from ldm.modules.ema import LitEma
@@ -26,7 +28,6 @@ from ldm.models.autoencoder import VQModelInterface, IdentityFirstStage, Autoenc
 from ldm.modules.diffusionmodules.util import make_beta_schedule, extract_into_tensor, noise_like
 from ldm.models.diffusion.ddim import DDIMSampler
 from torchvision import transforms, utils
-import GPUtil
 from ldm.modules.diffusionmodules.util import make_ddim_sampling_parameters, make_ddim_timesteps
 
 __conditioning_keys__ = {'concat': 'c_concat',
@@ -697,8 +698,6 @@ class LatentDiffusion(DDPM):
             _ = None
 
             for j in range(num_steps):
-
-                # print(GPUtil.showUtilization())
 
                 operation_func = operation.operation_func
                 other_guidance_func = operation.other_guidance_func
