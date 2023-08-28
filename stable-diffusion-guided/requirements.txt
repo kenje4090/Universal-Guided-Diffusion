@@ -1,0 +1,4 @@
+facenet_pytorch
+invisible-watermark
+taming-transformers-rom1504
+kornia
